@@ -16,6 +16,7 @@ app.use(express.json({ extended: false }));
 app.get('/', (req, res) => res.send('API running!'));
 
 app.use('/api/exercises', require('./api/exercises'));
+app.use('/api/workout', require('./api/workout'));
 
 db.initDb((err, db) => {
     if (err) {
@@ -23,7 +24,7 @@ db.initDb((err, db) => {
     }
 });
 
-// const PORT = process.env.PORT || 9000;
-// app.listen(PORT, () => console.log(`Server started on ${PORT}`));
+const PORT = process.env.PORT || 9000;
+app.listen(PORT, () => console.log(`Server started on ${PORT}`));
 
 module.exports = { app };
