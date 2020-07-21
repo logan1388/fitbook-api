@@ -18,8 +18,8 @@ router.post('/',
         }
         const { userId, category, date } = req.body;
         try {
-            let start = moment().startOf('day');
-            let end = moment().endOf('day');
+            let start = new Date(moment().startOf('day'));
+            let end = new Date(moment().endOf('day'));
             let todayWorkout = await db.getDb().collection('workouts')
                 .find({ userId, date: { $gte: start, $lt: end } }).toArray();
             let exists = false;
@@ -34,7 +34,7 @@ router.post('/',
                 let workout = {
                     'userId': userId,
                     'category': category,
-                    'date': date
+                    'date': new Date(date)
                 };
                 await db.getDb().collection('workouts').insertOne(workout);
                 res.send('Workout added!');
@@ -50,7 +50,7 @@ router.post('/workoutHistory',
     async (req, res) => {
         const userId = req.body.userId;
         try {
-            let start = moment().startOf('day');
+            let start = new Date(moment().startOf('day'));
             const workoutHistory = await db.getDb().collection('workouts')
                 .find({ userId, date: { $lt: start } }).sort({ date: -1 }).toArray();
             res.json(workoutHistory);
@@ -65,7 +65,7 @@ router.post('/workoutSummary',
     async (req, res) => {
         const userId = req.body.userId;
         try {
-            let start = moment().startOf('day');
+            let start = new Date(moment().startOf('day'));
             const workoutSummary = await db.getDb().collection('workouts')
                 .find({ userId, date: { $gt: start } }).sort({ date: -1, category: 1 }).toArray();
             res.json(workoutSummary);
