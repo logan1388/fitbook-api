@@ -18,6 +18,7 @@ app.get('/', (req, res) => res.send('API running!'));
 app.use('/api/exercises', require('./api/exercises'));
 app.use('/api/workout', require('./api/workout'));
 app.use('/api/maxweight', require('./api/maxweight'));
+app.use('/api/workoutlog', require('./api/workoutlog'));
 
 db.initDb((err, db) => {
     if (err) {
