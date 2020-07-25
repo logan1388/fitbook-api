@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { check, validationResult } = require('express-validator');
 const db = require('../config/db');
+const { ObjectId } = require('mongodb');
 
 //@route POST api/workoutlog
 //@desc Insert workoutlog for a particular exercise
@@ -28,35 +29,37 @@ router.post('/',
                 'unit': unit,
                 'count': count
             };
+            let log;
             switch (req.body.category) {
                 case 'Chest': {
-                    await db.getDb().collection('chestworkoutlogs').insertOne(workoutlog);
+                    log = await db.getDb().collection('chestworkoutlogs').insertOne(workoutlog);
                     break;
                 }
                 case 'Leg': {
-                    await db.getDb().collection('legworkoutlogs').insertOne(workoutlog);
+                    log = await db.getDb().collection('legworkoutlogs').insertOne(workoutlog);
                     break;
                 }
                 case 'Back': {
-                    await db.getDb().collection('backworkoutlogs').insertOne(workoutlog);
+                    log = await db.getDb().collection('backworkoutlogs').insertOne(workoutlog);
                     break;
                 }
                 case 'Triceps': {
-                    await db.getDb().collection('tricepsworkoutlogs').insertOne(workoutlog);
+                    log = await db.getDb().collection('tricepsworkoutlogs').insertOne(workoutlog);
                     break;
                 }
                 case 'Shoulder': {
-                    await db.getDb().collection('shoulderworkoutlogs').insertOne(workoutlog);
+                    log = await db.getDb().collection('shoulderworkoutlogs').insertOne(workoutlog);
                     break;
                 }
                 case 'Biceps': {
-                    await db.getDb().collection('bicepsworkoutlogs').insertOne(workoutlog);
+                    log = await db.getDb().collection('bicepsworkoutlogs').insertOne(workoutlog);
                     break;
                 }
                 default: {
                     res.send(req.body.category + ' not found!');
                 }
             }
+            workoutlog.logId = log.insertedId
             await db.getDb().collection('workoutlogs').insertOne(workoutlog);
             res.send('Workoutlog added!');
         }
@@ -152,6 +155,21 @@ router.post('/logs',
                 }
             }
             res.json(logs);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+);
+
+//@route PUT api/workoutlog/note
+//@desc Update note for a log
+router.put('/note',
+    async (req, res) => {
+        try {
+            const { id, category, name, note } = req.body;
+            let updateNote = await db.getDb().collection('chestworkoutlogs').updateOne({ "_id": ObjectId(id) }, {$set: { "note": note }});
+            res.json(updateNote);
         }
         catch (err) {
             console.log(err);
