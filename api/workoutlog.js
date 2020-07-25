@@ -30,35 +30,8 @@ router.post('/',
                 'count': count
             };
             let log;
-            switch (req.body.category) {
-                case 'Chest': {
-                    log = await db.getDb().collection('chestworkoutlogs').insertOne(workoutlog);
-                    break;
-                }
-                case 'Leg': {
-                    log = await db.getDb().collection('legworkoutlogs').insertOne(workoutlog);
-                    break;
-                }
-                case 'Back': {
-                    log = await db.getDb().collection('backworkoutlogs').insertOne(workoutlog);
-                    break;
-                }
-                case 'Triceps': {
-                    log = await db.getDb().collection('tricepsworkoutlogs').insertOne(workoutlog);
-                    break;
-                }
-                case 'Shoulder': {
-                    log = await db.getDb().collection('shoulderworkoutlogs').insertOne(workoutlog);
-                    break;
-                }
-                case 'Biceps': {
-                    log = await db.getDb().collection('bicepsworkoutlogs').insertOne(workoutlog);
-                    break;
-                }
-                default: {
-                    res.send(req.body.category + ' not found!');
-                }
-            }
+            let woCategory = category.toLowerCase();
+            log = await db.getDb().collection(`${woCategory}workoutlogs`).insertOne(workoutlog);
             workoutlog.logId = log.insertedId
             await db.getDb().collection('workoutlogs').insertOne(workoutlog);
             res.send('Workoutlog added!');
@@ -75,59 +48,11 @@ router.post('/log',
     async (req, res) => {
         try {
             const { userId, category, name } = req.body;
-            switch (category) {
-                case 'Chest': {
-                    let exerciselogs = await db.getDb().collection('chestworkoutlogs')
-                        .find({ userId: userId, name: name }).sort({ date: -1 }).toArray();
-                    const maxWeight = await db.getDb().collection('maxweights').findOne({ userId: userId, name: name });
-                    exerciselogs.map(logs => logs.maxWeight = maxWeight ? maxWeight.weight : '');
-                    res.json(exerciselogs);
-                    break;
-                }
-                case 'Leg': {
-                    let exerciselogs = await db.getDb().collection('legworkoutlogs')
-                        .find({ userId: userId, name: name }).sort({ date: -1 }).toArray();
-                    const maxWeight = await db.getDb().collection('maxweights').findOne({ userId: userId, name: name });
-                    exerciselogs.map(logs => logs.maxWeight = maxWeight ? maxWeight.weight : '');
-                    res.json(exerciselogs);
-                    break;
-                }
-                case 'Back': {
-                    let exerciselogs = await db.getDb().collection('backworkoutlogs')
-                        .find({ userId: userId, name: name }).sort({ date: -1 }).toArray();
-                    const maxWeight = await db.getDb().collection('maxweights').findOne({ userId: userId, name: name });
-                    exerciselogs.map(logs => logs.maxWeight = maxWeight ? maxWeight.weight : '');
-                    res.json(exerciselogs);
-                    break;
-                }
-                case 'Triceps': {
-                    let exerciselogs = await db.getDb().collection('tricepsworkoutlogs')
-                        .find({ userId: userId, name: name }).sort({ date: -1 }).toArray();
-                    const maxWeight = await db.getDb().collection('maxweights').findOne({ userId: userId, name: name });
-                    exerciselogs.map(logs => logs.maxWeight = maxWeight ? maxWeight.weight : '');
-                    res.json(exerciselogs);
-                    break;
-                }
-                case 'Shoulder': {
-                    let exerciselogs = await db.getDb().collection('shoulderworkoutlogs')
-                        .find({ userId: userId, name: name }).sort({ date: -1 }).toArray();
-                    const maxWeight = await db.getDb().collection('maxweights').findOne({ userId: userId, name: name });
-                    exerciselogs.map(logs => logs.maxWeight = maxWeight ? maxWeight.weight : '');
-                    res.json(exerciselogs);
-                    break;
-                }
-                case 'Biceps': {
-                    let exerciselogs = await db.getDb().collection('bicepsworkoutlogs')
-                        .find({ userId: userId, name: name }).sort({ date: -1 }).toArray();
-                    const maxWeight = await db.getDb().collection('maxweights').findOne({ userId: userId, name: name });
-                    exerciselogs.map(logs => logs.maxWeight = maxWeight ? maxWeight.weight : '');
-                    res.json(exerciselogs);
-                    break;
-                }
-                default: {
-                    res.json('Exercise not found');
-                }
-            }
+            let exerciselogs = await db.getDb().collection(`${category.toLowerCase()}workoutlogs`)
+                .find({ userId: userId, name: name }).sort({ date: -1 }).toArray();
+            const maxWeight = await db.getDb().collection('maxweights').findOne({ userId: userId, name: name });
+            exerciselogs.map(logs => logs.maxWeight = maxWeight ? maxWeight.weight : '');
+            res.json(exerciselogs);
         }
         catch (err) {
             console.log(err);
@@ -168,7 +93,8 @@ router.put('/note',
     async (req, res) => {
         try {
             const { id, category, name, note } = req.body;
-            let updateNote = await db.getDb().collection('chestworkoutlogs').updateOne({ "_id": ObjectId(id) }, {$set: { "note": note }});
+            let updateNote = await db.getDb().collection(`${category.toLowerCase()}workoutlogs`)
+                .updateOne({ "_id": ObjectId(id) }, { $set: { "note": note } });
             res.json(updateNote);
         }
         catch (err) {
