@@ -32,7 +32,7 @@ router.post('/',
 router.post('/weight',
     async(req, res) => {
         try{
-            const { userId, category, name } = req.body;
+            const { userId, name } = req.body;
             const maxWeight = await db.getDb().collection('maxweights').findOne({ userId: userId, name: name });
             res.json(maxWeight);
         }
