@@ -92,7 +92,7 @@ router.post('/logs',
 router.put('/note',
     async (req, res) => {
         try {
-            const { id, category, name, note } = req.body;
+            const { id, category, note } = req.body;
             let updateNote = await db.getDb().collection(`${category.toLowerCase()}workoutlogs`)
                 .updateOne({ "_id": ObjectId(id) }, { $set: { "note": note } });
             res.json(updateNote);
