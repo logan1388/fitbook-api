@@ -66,7 +66,7 @@ router.post('/workoutSummary',
         const userId = req.body.userId;
         try {
             let start = new Date(moment().startOf('day'));
-            const workoutSummary = await db.getDb().collection('workouts')
+            const workoutSummary = await db.getDb().collection('workoutlogs')
                 .find({ userId, date: { $gt: start } }).sort({ date: -1, category: 1 }).toArray();
             res.json(workoutSummary);
         }
