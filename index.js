@@ -19,6 +19,7 @@ app.use('/api/exercises', require('./api/exercises'));
 app.use('/api/workout', require('./api/workout'));
 app.use('/api/workoutlog', require('./api/workoutlog'));
 app.use('/api/bestset', require('./api/bestset'));
+app.use('/api/awards', require('./api/awards'));
 
 db.initDb((err, db) => {
     if (err) {
