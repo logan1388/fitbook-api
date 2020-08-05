@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { check, validationResult } = require('express-validator');
 const db = require('../config/db');
 const { ObjectId } = require('mongodb');
+const moment = require('moment');
 
 //@route POST api/workoutlog
 //@desc Insert workoutlog for a particular exercise
@@ -79,6 +80,24 @@ router.post('/logs',
                     log.maxWeightCount = maxWt.count;
                 }
             }
+            res.json(logs);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+);
+
+//@route GET api/workoutlog/logsWeek
+//@desc Get logs of all exercises for a week
+router.post('/logsWeek',
+    async (req, res) => {
+        try {
+            const { userId } = req.body;
+            let start = new Date(moment().subtract(7, 'days').startOf('day'));
+            let end = new Date(moment().subtract(1, 'days').endOf('day'));
+            let logs = await db.getDb().collection('workoutlogs')
+                .find({ userId, date: { $gte: start, $lt: end } }).sort({ date: -1 }).toArray();
             res.json(logs);
         }
         catch (err) {
