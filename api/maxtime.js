@@ -27,7 +27,7 @@ router.post('/',
     }
 )
 
-router.post('/set',
+router.post('/time',
     async(req, res) => {
         try{
             const { userId, name } = req.body;
