@@ -3,13 +3,14 @@ const db = require('../config/db');
 
 router.post('/',
     async(req, res) => {
-        const { userId, name, date, weight, unit, count, time } = req.body;
+        const { userId, category, name, date, weight, unit, count, time } = req.body;
         try{     
             const prevmaxTime = await db.getDb().collection('maxtime').find({ userId: userId, name: name }).toArray();
             if(time != 0 && (prevmaxTime.length == 0 || prevmaxTime[0].time < time || (prevmaxTime[0].time == time && prevmaxTime[0].count < count))){
                 const maxTimeRemoved = await db.getDb().collection('maxtime').deleteOne({ userId: userId, name: name });
                 let maxTime = {
                     'userId': userId,
+                    'category': category,
                     'name': name,
                     'date': new Date(date),
                     'weight': weight,

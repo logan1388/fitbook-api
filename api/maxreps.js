@@ -3,13 +3,14 @@ const db = require('../config/db');
 
 router.post('/',
     async(req, res) => {
-        const { userId, name, date, weight, unit, count } = req.body;
+        const { userId, category, name, date, weight, unit, count } = req.body;
         try{     
             const prevMaxReps = await db.getDb().collection('maxreps').find({ userId: userId, name: name }).toArray();
             if(prevMaxReps.length == 0 || prevMaxReps[0].count < count || (prevMaxReps[0].count == count && prevMaxReps[0].weight < weight)){
                 const maxRepsRemoved = await db.getDb().collection('maxreps').deleteOne({ userId: userId, name: name });
                 let maxReps = {
                     'userId': userId,
+                    'category': category,
                     'name': name,
                     'date': new Date(date),
                     'weight': weight,
