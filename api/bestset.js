@@ -3,13 +3,14 @@ const db = require('../config/db');
 
 router.post('/',
     async(req, res) => {
-        const { userId, name, date, weight, unit, count } = req.body;
+        const { userId, category, name, date, weight, unit, count } = req.body;
         try{     
             const prevMaxWeight = await db.getDb().collection('maxweights').find({ userId: userId, name: name }).toArray();
             if(prevMaxWeight.length == 0 || prevMaxWeight[0].weight < weight || (prevMaxWeight[0].weight == weight && prevMaxWeight[0].count < count)){
                 const maxWeightRemoved = await db.getDb().collection('maxweights').deleteOne({ userId: userId, name: name });
                 let maxWeight = {
                     'userId': userId,
+                    'category': category,
                     'name': name,
                     'date': new Date(date),
                     'weight': weight,
@@ -23,6 +24,7 @@ router.post('/',
                 const maxRepsRemoved = await db.getDb().collection('maxreps').deleteOne({ userId: userId, name: name });
                 let maxReps = {
                     'userId': userId,
+                    'category': category,
                     'name': name,
                     'date': new Date(date),
                     'weight': weight,
@@ -37,6 +39,7 @@ router.post('/',
                 const bestSetRemoved = await db.getDb().collection('bestsets').deleteOne({ userId: userId, name: name });
                 let bestSet = {
                     'userId': userId,
+                    'category': category,
                     'name': name,
                     'date': new Date(date),
                     'weight': weight,
