@@ -1,7 +1,8 @@
 const router = require('express').Router();
-const db = require('../config/db');
-const { check, validationResult } = require('express-validator');
-const moment = require('moment');
+import db from '../config/db';
+import { check, validationResult } from 'express-validator';
+import moment from 'moment';
+import { Request } from 'express-validator/src/base';
 
 // @route   POST api/workout
 // @desc    Insert today's workout
@@ -11,15 +12,15 @@ router.post('/',
         check('category', 'Category is required').not().isEmpty(),
         check('date', 'Date is required').not().isEmpty()
     ],
-    async (req, res) => {
+    async (req: Request, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { errors: import("express-validator").ValidationError[]; }): any; new(): any; }; }; send: (arg0: string) => void; }) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
         const { userId, category, date } = req.body;
         try {
-            let start = new Date(moment().startOf('day'));
-            let end = new Date(moment().endOf('day'));
+            let start = new Date(moment().startOf('day').date());
+            let end = new Date(moment().endOf('day').date());
             let todayWorkout = await db.getDb().collection('workouts')
                 .find({ userId, date: { $gte: start, $lt: end } }).toArray();
             let exists = false;
@@ -47,10 +48,10 @@ router.post('/',
 );
 
 router.post('/workoutHistory',
-    async (req, res) => {
+    async (req: { body: { userId: any; }; }, res: { json: (arg0: any[]) => void; }) => {
         const userId = req.body.userId;
         try {
-            let start = new Date(moment().startOf('day'));
+            let start = new Date(moment().startOf('day').date());
             const workoutHistory = await db.getDb().collection('workouts')
                 .find({ userId, date: { $lt: start } }).sort({ date: -1 }).toArray();
             res.json(workoutHistory);
@@ -62,10 +63,10 @@ router.post('/workoutHistory',
 );
 
 router.post('/workoutSummary',
-    async (req, res) => {
+    async (req: { body: { userId: any; }; }, res: { json: (arg0: any[]) => void; }) => {
         const userId = req.body.userId;
         try {
-            let start = new Date(moment().startOf('day'));
+            let start = new Date(moment().startOf('day').date());
             const workoutSummary = await db.getDb().collection('workoutlogs')
                 .find({ userId, date: { $gt: start } }).sort({ date: -1, category: 1 }).toArray();
             res.json(workoutSummary);
