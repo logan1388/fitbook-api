@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const db = require('../config/db');
+import db from '../config/db';
 
 router.post('/',
-    async(req, res) => {
+    async(req: { body: { userId: any; category: any; name: any; date: any; weight: any; unit: any; count: any; }; }, res: { send: (arg0: string) => void; }) => {
         const { userId, category, name, date, weight, unit, count } = req.body;
         try{     
             const prevMaxWeight = await db.getDb().collection('maxweights').find({ userId: userId, name: name }).toArray();
@@ -58,7 +58,7 @@ router.post('/',
 )
 
 router.post('/set',
-    async(req, res) => {
+    async(req: { body: { userId: any; name: any; }; }, res: { json: (arg0: { maxWeight: any; maxReps: any; bestSet: any; }) => void; }) => {
         try{
             const { userId, name } = req.body;
             const maxWeight = await db.getDb().collection('maxweights').findOne({ userId: userId, name: name });

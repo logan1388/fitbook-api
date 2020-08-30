@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const db = require('../config/db');
+import db from '../config/db';
 
 router.post('/',
-    async(req, res) => {
+    async(req: { body: { userId: any; category: any; name: any; date: any; weight: any; unit: any; count: any; time: any; }; }, res: { send: (arg0: string) => void; }) => {
         const { userId, category, name, date, weight, unit, count, time } = req.body;
         try{     
             const prevmaxTime = await db.getDb().collection('maxtime').find({ userId: userId, name: name }).toArray();
@@ -29,7 +29,7 @@ router.post('/',
 )
 
 router.post('/time',
-    async(req, res) => {
+    async(req: { body: { userId: any; name: any; }; }, res: { json: (arg0: any) => void; }) => {
         try{
             const { userId, name } = req.body;
             const maxTime = await db.getDb().collection('maxtime').findOne({ userId: userId, name: name });
