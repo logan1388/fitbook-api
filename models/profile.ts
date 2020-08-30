@@ -5,7 +5,7 @@ export interface CreateProfileModel {
     firstName: string;
     lastName: string;
     weight?: number;
-    weightUnit?: number;
+    weightUnit?: string;
     height?: number;   
 }
 
@@ -15,6 +15,6 @@ export interface ProfileModel {
     firstName: string;
     lastName: string;
     weight: number;
-    weightUnit: number;
+    weightUnit: string;
     height: number;   
 }
