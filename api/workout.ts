@@ -51,7 +51,7 @@ router.post('/workoutHistory',
     async (req: { body: { userId: any; }; }, res: { json: (arg0: any[]) => void; }) => {
         const userId = req.body.userId;
         try {
-            let start = new Date(moment().startOf('day').date());
+            let start = new Date(moment().startOf('day').format());
             const workoutHistory = await db.getDb().collection('workouts')
                 .find({ userId, date: { $lt: start } }).sort({ date: -1 }).toArray();
             res.json(workoutHistory);
@@ -66,7 +66,7 @@ router.post('/workoutSummary',
     async (req: { body: { userId: any; }; }, res: { json: (arg0: any[]) => void; }) => {
         const userId = req.body.userId;
         try {
-            let start = new Date(moment().startOf('day').date());
+            let start = new Date(moment().startOf('day').format());
             const workoutSummary = await db.getDb().collection('workoutlogs')
                 .find({ userId, date: { $gt: start } }).sort({ date: -1, category: 1 }).toArray();
             res.json(workoutSummary);
