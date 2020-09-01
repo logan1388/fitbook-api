@@ -19,8 +19,8 @@ router.post('/',
         }
         const { userId, category, date } = req.body;
         try {
-            let start = new Date(moment().startOf('day').date());
-            let end = new Date(moment().endOf('day').date());
+            let start = new Date(moment().startOf('day').format());
+            let end = new Date(moment().endOf('day').format());
             let todayWorkout = await db.getDb().collection('workouts')
                 .find({ userId, date: { $gte: start, $lt: end } }).toArray();
             let exists = false;
