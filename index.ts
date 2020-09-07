@@ -21,7 +21,7 @@ app.use('/api/workout', require('./api/workout'));
 app.use('/api/workoutlog', require('./api/workoutlog'));
 app.use('/api/bestset', require('./api/bestset'));
 app.use('/api/awards', require('./api/awards'));
-app.use('/api/homeworkoutlog', require('./api/homeworkoutlog'));
+app.use('/api/resistancelog', require('./api/resistancelog'));
 app.use('/api/maxreps', require('./api/maxreps'));
 app.use('/api/maxtime', require('./api/maxtime'));
 app.use('/api/profiles', require('./api/profiles'));
