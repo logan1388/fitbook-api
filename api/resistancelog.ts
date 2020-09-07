@@ -4,7 +4,7 @@ import db from '../config/db';
 import { ObjectId } from 'mongodb';
 import moment from 'moment';
 
-//@route POST api/homeworkoutlog
+//@route POST api/resistancelog
 //@desc Insert workoutlog for a particular exercise
 router.post('/',
     [
@@ -27,8 +27,8 @@ router.post('/',
                 'count': count,
                 'time': time
             };
-            await db.getDb().collection('homeworkoutlogs').insertOne(workoutlog);
-            res.send('HomeWorkoutlog added!');
+            await db.getDb().collection('resistancelogs').insertOne(workoutlog);
+            res.send('resistancelog added!');
         }
         catch (err) {
             console.log(err);
@@ -36,13 +36,13 @@ router.post('/',
     }
 )
 
-//@route GET api/homeworkoutlog/:category/:name
+//@route GET api/resistancelog/:category/:name
 //@desc Get logs for an exercise
 router.post('/log',
     async (req: { body: { userId: any; category: any; name: any; }; }, res: { json: (arg0: any) => void; }) => {
         try {
             const { userId, category, name } = req.body;
-            let exerciselogs = await db.getDb().collection(`homeworkoutlogs`)
+            let exerciselogs = await db.getDb().collection(`resistancelogs`)
                 .find({ userId: userId, name: name }).sort({ date: -1 }).toArray();
             res.json(exerciselogs);
         }
@@ -52,7 +52,7 @@ router.post('/log',
     }
 )
 
-//@route GET api/homeworkoutlog/logsWeek
+//@route GET api/resistancelog/logsWeek
 //@desc Get logs of all exercises for a week
 router.post('/logsWeek',
     async (req: { body: { userId: any; }; }, res: { json: (arg0: any) => void; }) => {
@@ -60,7 +60,7 @@ router.post('/logsWeek',
             const { userId } = req.body;
             let start = new Date(moment().subtract(7, 'days').startOf('day').date());
             let end = new Date(moment().subtract(1, 'days').endOf('day').date());
-            let logs = await db.getDb().collection('homeworkoutlogs')
+            let logs = await db.getDb().collection('resistancelogs')
                 .find({ userId, date: { $gte: start, $lt: end } }).sort({ date: -1 }).toArray();
             res.json(logs);
         }
@@ -70,13 +70,13 @@ router.post('/logsWeek',
     }
 );
 
-//@route PUT api/homeworkoutlog/note
+//@route PUT api/resistancelog/note
 //@desc Update note for a log
 router.put('/note',
     async (req: { body: { id: any; category: any; note: any; }; }, res: { json: (arg0: any) => void; }) => {
         try {
             const { id, category, note } = req.body;
-            let updateNote = await db.getDb().collection(`homeworkoutlogs`)
+            let updateNote = await db.getDb().collection(`resistancelogs`)
                 .updateOne({ "_id": new ObjectId(id) }, { $set: { "note": note } });
             res.json(updateNote);
         }
