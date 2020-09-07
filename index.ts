@@ -3,12 +3,11 @@ import Cors from 'cors';
 import Database from './config/db';
 const app = express();
 
-
 var corsOption: Cors.CorsOptions = {
-    origin: true,
-    methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
-    credentials: true,
-    exposedHeaders: ['x-auth-token']
+  origin: true,
+  methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+  credentials: true,
+  exposedHeaders: ['x-auth-token'],
 };
 
 app.use(Cors(corsOption));

@@ -1,6 +1,16 @@
 module.exports = {
   root: true,
-  extends: '@react-native-community',
+  extends: ['prettier', 'prettier/@typescript-eslint', 'prettier/standard'],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  parserOptions: {
+    project: 'tsconfig.json',
+    sourceType: 'module',
+  },
+  plugins: ['@typescript-eslint', 'prettier'],
+  ignorePatterns: ['build/**/*.js', '.eslintrc.js'],
+  rules: {
+    '@typescript-eslint/semi': ['error', 'always'],
+    'no-shadow': ['warn', { hoist: 'never' }],
+    'indent': 'off',
+  },
 };
