@@ -2,7 +2,7 @@
 
 import IDatabase from '../database/IDatabase';
 import { CreateProfileModel, ProfileModel } from '../models/ProfileModel';
-import ServiceResponse from '../models/ServiceResponse';
+import ServiceResponse, { isServiceResponse } from '../models/ServiceResponse';
 
 export default class ProfilesService {
   private db: IDatabase;
@@ -20,5 +20,15 @@ export default class ProfilesService {
     const r: ProfileModel | ServiceResponse = await this.db.GetAsync(id);
 
     return r;
+  }
+
+  public async getProfileById(userId: string): Promise<ProfileModel | ServiceResponse> {
+    const r: ProfileModel[] | ServiceResponse = await this.db.GetListByUserId(userId);
+
+    if (isServiceResponse(r)) {
+      return r;
+    }
+
+    return r[0];
   }
 }

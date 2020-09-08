@@ -8,10 +8,13 @@
     "tsc": "tsc",
     "lint": "eslint . --ext .js,.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
-    "prettier-check": "prettier --check \"*.ts\" \"api/**/*{.js,.ts}\" \"config/**/*{.js,.ts}\" \"models/**/*{.js,.ts}\"",
-    "prettify": "prettier --write \"*.ts\" \"api/**/*{.js,.ts}\" \"config/**/*{.js,.ts}\" \"models/**/*{.js,.ts}\""
+    "prettier-check": "prettier --check \"*.ts\" \"api/**/*{.js,.ts}\" \"controllers/**/*{.js,.ts}\" \"middleware/**/*{.js,.ts}\" \"database/**/*{.js,.ts}\" \"config/**/*{.js,.ts}\" \"models/**/*{.js,.ts}\"",
+    "prettify": "prettier --write \"*.ts\" \"api/**/*{.js,.ts}\" \"controllers/**/*{.js,.ts}\" \"middleware/**/*{.js,.ts}\" \"database/**/*{.js,.ts}\" \"config/**/*{.js,.ts}\" \"models/**/*{.js,.ts}\""
   },
   "author": "Shiv",
+  "contributors": [
+    "Manu Nair <manunair3@gmail.com>"
+  ],
   "license": "ISC",
   "dependencies": {
     "@types/config": "0.0.36",

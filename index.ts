@@ -1,33 +1,23 @@
-import express from 'express';
-import Cors from 'cors';
-import Database from './config/db';
-const app = express();
+// Copyright FitBook
 
-var corsOption: Cors.CorsOptions = {
-  origin: true,
-  methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
-  credentials: true,
-  exposedHeaders: ['x-auth-token'],
-};
+import App from './app';
 
-app.use(Cors(corsOption));
-app.use(express.json());
+// Controllers
+import ProfileController from './controllers/profiles';
 
-app.get('/', (_, response) => response.send('API running!'));
+// Services
+import ProfilesService from './commonlib/services/profiles';
 
-app.use('/api/exercises', require('./api/exercises'));
-app.use('/api/workout', require('./api/workout'));
-app.use('/api/workoutlog', require('./api/workoutlog'));
-app.use('/api/bestset', require('./api/bestset'));
-app.use('/api/awards', require('./api/awards'));
-app.use('/api/resistancelog', require('./api/resistancelog'));
-app.use('/api/maxreps', require('./api/maxreps'));
-app.use('/api/maxtime', require('./api/maxtime'));
-app.use('/api/profiles', require('./api/profiles'));
+// Database
+import MongoDb from './database/MongoDb';
 
-Database.initDb();
+// Config
+import { MongoDbTables } from './config/mongoDbTables';
 
-const PORT = process.env.PORT || 9000;
-app.listen(PORT, () => console.log(`Server started on ${PORT}`));
+const profileService = new ProfilesService(new MongoDb(MongoDbTables.PROFILES));
 
-module.exports = { app };
+const app = new App([new ProfileController(profileService)], process.env.PORT || '9000');
+
+app.listen();
+
+export default app;
