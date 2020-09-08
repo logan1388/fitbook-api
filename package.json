@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "lint": "eslint . --ext .js,.ts",
+    "lint-fix": "eslint . --ext .js,.ts --fix",
+    "prettier-check": "prettier --check \"*.ts\" \"api/**/*{.js,.ts}\" \"config/**/*{.js,.ts}\" \"models/**/*{.js,.ts}\"",
+    "prettify": "prettier --write \"*.ts\" \"api/**/*{.js,.ts}\" \"config/**/*{.js,.ts}\" \"models/**/*{.js,.ts}\""
   },
   "author": "Shiv",
   "license": "ISC",
@@ -16,12 +20,18 @@
     "@types/mongodb": "^3.5.26",
     "config": "^3.3.1",
     "cors": "^2.8.5",
-    "eslint": "^7.7.0",
+    "eslint": "^7.8.1",
     "express": "^4.17.1",
     "express-validator": "^6.6.0",
     "moment": "^2.27.0",
     "mongodb": "^3.5.9",
     "prettier": "^2.1.1",
     "typescript": "^4.0.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4"
   }
 }

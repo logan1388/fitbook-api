@@ -1,0 +1,17 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeLens": false,
+  "editor.tabSize": 2,
+  "files.insertFinalNewline": true,
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": false,
+  "typescript.format.insertSpaceBeforeFunctionParenthesis": false,
+  "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+  "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+  "xmlTools.enforcePrettySelfClosingTagOnFormat": true,
+  "files.trimTrailingWhitespace": true,
+  "eslint.run": "onSave",
+  "prettier.packageManager": "yarn",
+  "prettier.printWidth": 120
+}
