@@ -17,12 +17,15 @@ export default class MongoDb implements IDatabase {
     return data;
   }
 
-  public async GetListByUserId(userId: string): Promise<Record<string, any>[] | ServiceResponse> {
-    const data = await db.getDb().collection(this.tableName).find({ userId }).toArray();
-
-    if (data.length < 1) {
-      return new ServiceResponse();
-    }
+  public async GetListByUserId(
+    userId: string,
+    params?: Record<string, any>
+  ): Promise<Record<string, any>[] | ServiceResponse> {
+    const data = await db
+      .getDb()
+      .collection(this.tableName)
+      .find({ userId, ...params })
+      .toArray();
 
     return data;
   }

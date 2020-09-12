@@ -21,3 +21,11 @@ Ensure default.json file is present in config folder. Sample data format is avai
 ```
 node build/index.js
 ```
+
+- Clean build and run code locally
+
+To clean up build folder, translate TypeScript to Javascript and start the server using just one command.
+
+```
+yarn local
+```
