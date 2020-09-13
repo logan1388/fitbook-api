@@ -4,9 +4,12 @@ import App from './app';
 
 // Controllers
 import ProfileController from './controllers/profiles';
+import ResistanceController from './controllers/resistance';
 
 // Services
 import ProfilesService from './commonlib/services/profiles';
+import ResistanceService from './commonlib/services/resistance';
+
 
 // Database
 import MongoDb from './database/MongoDb';
@@ -15,8 +18,12 @@ import MongoDb from './database/MongoDb';
 import { MongoDbTables } from './config/mongoDbTables';
 
 const profileService = new ProfilesService(new MongoDb(MongoDbTables.PROFILES));
+const resistanceService = new ResistanceService(new MongoDb(MongoDbTables.RESISTANCE));
 
-const app = new App([new ProfileController(profileService)], process.env.PORT || '9000');
+const app = new App(
+  [new ProfileController(profileService), new ResistanceController(resistanceService)],
+  process.env.PORT || '9000'
+);
 
 app.listen();
 

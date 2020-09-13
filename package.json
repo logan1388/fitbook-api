@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
+    "local": "rm -rf build && tsc && node build/index.js",
     "lint": "eslint . --ext .js,.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "prettier-check": "prettier --check \"*.ts\" \"api/**/*{.js,.ts}\" \"controllers/**/*{.js,.ts}\" \"middleware/**/*{.js,.ts}\" \"database/**/*{.js,.ts}\" \"config/**/*{.js,.ts}\" \"models/**/*{.js,.ts}\"",
