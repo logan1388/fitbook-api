@@ -12,9 +12,10 @@ router.get('/', async (req: any, res: { json: (arg0: any[]) => void }) => {
   }
 });
 
-router.get('/:category', async (req: { params: { category: any } }, res: { json: (arg0: any[]) => void }) => {
+router.get('/:category', async (req: { params: { category: string } }, res: { json: (arg0: any[]) => void }) => {
   try {
-    const exercises = await db.getDb().collection('exercises').find({ category: req.params.category }).toArray();
+    const category = req.params.category.toLocaleLowerCase();
+    const exercises = await db.getDb().collection('exercises').find({ category }).toArray();
     res.json(exercises);
   } catch (err) {
     console.log(err);
