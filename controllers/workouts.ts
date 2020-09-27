@@ -1,7 +1,7 @@
 // Copyright FitBook
 
 import express from 'express';
-import { CreateWorkoutModel, WorkoutModel } from '../commonlib/models/WorkoutModel';
+import { CreateWorkoutModel, WorkoutModel, WorkoutHistoryModel } from '../commonlib/models/WorkoutModel';
 import ServiceResponse, { isServiceResponse } from '../commonlib/models/ServiceResponse';
 import WorkoutsService from '../commonlib/services/workouts';
 import HttpException from '../models/httpException';
@@ -24,6 +24,7 @@ class WorkoutsController implements IController {
     this.router.post(WorkoutsController.PATH, this.createWorkout);
 
     this.router.get(`${WorkoutsController.PATH}/:type/:subType`, this.getWorkoutsListByType);
+    this.router.get(`${WorkoutsController.PATH}/workoutHistory`, this.getWorkoutsHistoryByUserId);
   }
 
   private getWorkoutsList = (request: express.Request, response: express.Response) => {
@@ -81,6 +82,36 @@ class WorkoutsController implements IController {
       next(new HttpException(500, 'Unable to retrieve workout data. Please try again later.'));
     }
   };
+
+  private getWorkoutsHistoryByUserId = async (
+    request: express.Request<{}, WorkoutHistoryModel, null, { userId?: string }>,
+    response: express.Response,
+    next: express.NextFunction
+  ) => {
+    try {
+      const userId = request.query.userId || '';
+      const r: WorkoutHistoryModel[] | ServiceResponse = await this.workoutsSvc.getWorkoutsHistoryByUserId(userId);
+
+      if (isServiceResponse(r)) {
+        switch (r.responseCode) {
+          case 404: {
+            next(new HttpException(r.responseCode, 'Workout history data not found'));
+            break;
+          }
+          default: {
+            next(new HttpException(500, 'Unable to retrieve workout history data. Please try again later.'));
+            break;
+          }
+        }
+        return;
+      }
+
+      response.status(200).json(r);
+    } catch (error) {
+      console.log(error);
+      next(new HttpException(500, 'Unable to retrieve workouts history data. Please try again later.'));
+    }
+  }
 }
 
 export default WorkoutsController;

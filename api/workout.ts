@@ -20,8 +20,8 @@ router.post(
         arg0: number
       ) => {
         (): any;
-        new (): any;
-        json: { (arg0: { errors: import('express-validator').ValidationError[] }): any; new (): any };
+        new(): any;
+        json: { (arg0: { errors: import('express-validator').ValidationError[] }): any; new(): any };
       };
       send: (arg0: string) => void;
     }
@@ -72,6 +72,7 @@ router.post('/workoutHistory', async (req: { body: { userId: any } }, res: { jso
       .find({ userId, date: { $lt: start } })
       .sort({ date: -1 })
       .toArray();
+    workoutHistory.forEach(hist => (hist.type = hist.category));
     res.json(workoutHistory);
   } catch (err) {
     console.log(err);
@@ -84,7 +85,7 @@ router.post('/workoutSummary', async (req: { body: { userId: any } }, res: { jso
     let start = new Date(moment().startOf('day').format());
     const workoutSummary = await db
       .getDb()
-      .collection('workoutlogs')
+      .collection('workouts')
       .find({ userId, date: { $gt: start } })
       .sort({ date: -1, category: 1 })
       .toArray();
