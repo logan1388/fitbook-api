@@ -35,6 +35,7 @@ router.post('/week', async (req: { body: { userId: any } }, res: { json: (arg0: 
     // const maxTime = await db.getDb().collection('maxtime')
     //     .find({ userId, date: { $gte: start, $lt: end } }).sort({ date: -1 }).toArray();
     // maxTime.forEach(time => awards.push(time));
+    awards.forEach(award => award.subType = award.name)
     res.json(awards);
   } catch (err) {
     console.log(err);

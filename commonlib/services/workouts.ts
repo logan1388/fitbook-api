@@ -24,7 +24,7 @@ export default class WorkoutsService {
   public async getWorkoutsHistoryByUserId(userId: string): Promise<WorkoutHistoryModel[] | ServiceResponse> {
     let date = new Date(moment().startOf('day').format());
     const params = { date };
-    const r: WorkoutHistoryModel[] | ServiceResponse = await this.db.GetListByUserId(userId, params);
+    const r: WorkoutHistoryModel[] | ServiceResponse = await this.db.GetListByUserId(userId);
     return r;
   }
 
