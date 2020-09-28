@@ -23,7 +23,7 @@ class ResistanceController implements IController {
     this.router.get(ResistanceController.PATH, this.getResistanceList);
     this.router.post(ResistanceController.PATH, this.createResistance);
 
-    this.router.get(`${ResistanceController.PATH}/:type`, this.getResistanceListByType);
+    this.router.get(`${ResistanceController.PATH}/type/:type`, this.getResistanceListByType);
   }
 
   private getResistanceList = (request: express.Request, response: express.Response) => {
