@@ -1,7 +1,7 @@
 // Copyright FitBook
 
 import express from 'express';
-import { CreateWorkoutModel, WorkoutModel, WorkoutHistoryModel } from '../commonlib/models/WorkoutModel';
+import { CreateWorkoutModel, WorkoutModel, WorkoutHistoryModel, WorkoutSummaryModel } from '../commonlib/models/WorkoutModel';
 import ServiceResponse, { isServiceResponse } from '../commonlib/models/ServiceResponse';
 import WorkoutsService from '../commonlib/services/workouts';
 import HttpException from '../models/httpException';
@@ -23,8 +23,9 @@ class WorkoutsController implements IController {
     this.router.get(WorkoutsController.PATH, this.getWorkoutsList);
     this.router.post(WorkoutsController.PATH, this.createWorkout);
 
-    this.router.get(`${WorkoutsController.PATH}/:type/:subType`, this.getWorkoutsListByType);
-    this.router.get(`${WorkoutsController.PATH}/workoutHistory`, this.getWorkoutsHistoryByUserId);
+    this.router.get(`${WorkoutsController.PATH}/type/:type/subType/:subType`, this.getWorkoutsListByType);
+    this.router.get(`${WorkoutsController.PATH}/history`, this.getWorkoutsHistoryByUserId);
+    this.router.get(`${WorkoutsController.PATH}/summary`, this.getWorkoutsSummaryByUserId);
   }
 
   private getWorkoutsList = (request: express.Request, response: express.Response) => {
@@ -51,7 +52,7 @@ class WorkoutsController implements IController {
   };
 
   private getWorkoutsListByType = async (
-    request: express.Request<{ type: string, subType: string }, WorkoutModel, null, { userId?: string }>,
+    request: express.Request<{ type: string; subType: string }, WorkoutModel, null, { userId?: string }>,
     response: express.Response,
     next: express.NextFunction
   ) => {
@@ -91,7 +92,6 @@ class WorkoutsController implements IController {
     try {
       const userId = request.query.userId || '';
       const r: WorkoutHistoryModel[] | ServiceResponse = await this.workoutsSvc.getWorkoutsHistoryByUserId(userId);
-
       if (isServiceResponse(r)) {
         switch (r.responseCode) {
           case 404: {
@@ -111,7 +111,12 @@ class WorkoutsController implements IController {
       console.log(error);
       next(new HttpException(500, 'Unable to retrieve workouts history data. Please try again later.'));
     }
-  }
+  };
+
+  private getWorkoutsSummaryByUserId = async (request: express.Request<{}, WorkoutSummaryModel, null, { userId?: string }>,
+    response: express.Response, next: express.NextFunction) => {
+      next(new HttpException(404, 'Not implemented'));
+    };
 }
 
 export default WorkoutsController;

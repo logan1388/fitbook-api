@@ -1,9 +1,8 @@
 // Copyright FitBook
 
 import IDatabase from '../database/IDatabase';
-import { CreateWorkoutModel, WorkoutHistoryModel, WorkoutModel } from '../models/WorkoutModel';
+import { CreateWorkoutModel, WorkoutHistoryModel, WorkoutSummaryModel, WorkoutModel } from '../models/WorkoutModel';
 import ServiceResponse, { isServiceResponse } from '../models/ServiceResponse';
-import moment from 'moment';
 
 export default class WorkoutsService {
   private db: IDatabase;
@@ -23,6 +22,11 @@ export default class WorkoutsService {
 
   public async getWorkoutsHistoryByUserId(userId: string): Promise<WorkoutHistoryModel[] | ServiceResponse> {
     const r: WorkoutHistoryModel[] | ServiceResponse = await this.db.GetListByUserId(userId);
+    return r;
+  }
+
+  public async getWorkoutsSummaryByUserId(userId: string): Promise<WorkoutSummaryModel[] | ServiceResponse> {
+    const r: WorkoutSummaryModel[] | ServiceResponse = await this.db.GetListByUserId(userId);
     return r;
   }
 

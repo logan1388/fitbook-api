@@ -1,6 +1,5 @@
 // Copyright FitBook
 
-// eslint-disable-next-line no-shadow
 export enum ResistanceTypes {
   PUSH_UP = 'PUSHUP',
   PULL_UP = 'PULLUP',
@@ -13,19 +12,21 @@ export enum ResistanceTypes {
 export interface CreateResistanceModel {
   userId: string;
   type: ResistanceTypes;
-  date: Date;
+  createdDate: Date;
   weight?: number;
+  unit?: string;
   count?: number;
   time?: string;
   note?: string;
 }
 
 export interface ResistanceModel {
-  id: string;
+  _id: string;
   userId: string;
   type: ResistanceTypes;
-  date: Date;
+  createdDate: Date;
   weight: number;
+  unit: string;
   count: number;
   time: string;
   note: string;

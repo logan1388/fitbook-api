@@ -38,3 +38,32 @@ export interface WorkoutHistoryModel {
   type: WorkoutTypes;
   date: Date;
 }
+
+export interface WorkoutSummaryModel {
+  _id: string;
+  userId: string;
+  subType: string;
+  date: Date;
+  weight: number;
+  unit: string;
+  count: number;
+}
+
+export const getWorkoutType = (param: string): WorkoutTypes => {
+  switch (param.toLocaleUpperCase()) {
+    case 'CHEST':
+      return WorkoutTypes.CHEST;
+    case 'LEG':
+      return WorkoutTypes.LEG;
+    case 'SHOULDER':
+      return WorkoutTypes.SHOULDER;
+    case 'BACK':
+      return WorkoutTypes.BACK;
+    case 'BICEPS':
+      return WorkoutTypes.BICEPS;
+    case 'TRICEPS':
+      return WorkoutTypes.TRICEPS;
+    default:
+      return WorkoutTypes.CHEST;
+  }
+};

@@ -25,6 +25,7 @@ export default class MongoDb implements IDatabase {
       .getDb()
       .collection(this.tableName)
       .find({ userId, ...params })
+      .sort({ createdDate: -1 })
       .toArray();
 
     return data;
